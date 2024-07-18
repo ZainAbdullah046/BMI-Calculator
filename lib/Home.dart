@@ -1,5 +1,3 @@
-import 'dart:nativewrappers/_internal/vm/lib/core_patch.dart';
-
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -29,61 +27,75 @@ class _MyWidgetState extends State<Home> {
           ),
         ),
       ),
-      backgroundColor: Colors.grey,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Text("BMI",
-              style: TextStyle(
-                  color: Color.fromARGB(179, 19, 5, 5),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30)),
-          const SizedBox(
-            height: 20,
-          ),
-          TextField(
-            controller: wicontroller,
-            decoration: const InputDecoration(
-                hintText: "Enter your weight in kgs",
-                prefixIcon: Icon(Icons.line_weight)),
-            keyboardType: TextInputType.number,
-          ),
-          TextField(
-            controller: hecontroller,
-            decoration: const InputDecoration(
-                hintText: "Enter your height meters",
-                prefixIcon: Icon(Icons.line_weight)),
-            keyboardType: TextInputType.number,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          ElevatedButton(
-              onPressed: () {
-                var weight = wicontroller.text;
-                var height = hecontroller.text;
+      backgroundColor: Colors.grey[200],
+      body: Container(
+        width: 300,
+        color: Colors.amber,
+        margin: EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Text("BMI",
+                style: TextStyle(
+                    color: Color.fromARGB(179, 19, 5, 5),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30)),
+            const SizedBox(
+              height: 20,
+            ),
+            TextField(
+              controller: wicontroller,
+              decoration: const InputDecoration(
+                  hintText: "Enter your weight in kgs",
+                  prefixIcon: Icon(Icons.line_weight)),
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            TextField(
+              controller: hecontroller,
+              decoration: const InputDecoration(
+                  hintText: "Enter your height in meters",
+                  prefixIcon: Icon(Icons.height)),
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  var weight = wicontroller.text;
+                  var height = hecontroller.text;
 
-                if (weight != "" && height != "") {
-                  var wei = int.parse(weight);
-                  var hei = int.parse(height);
-                  var bmi = wei / (hei * hei);
-                  setState(() {
-                    result = "Your BMI is: ${bmi.toStringAsFixed(2)}";
-                  });
-                } else {
-                  setState(() {
-                    result = "Plz fill all the reuired details ";
-                  });
-                }
-              },
-              child: const Text("Calculate")),
-          Text(result,
-              style: const TextStyle(
-                  color: Color.fromARGB(179, 19, 5, 5),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15))
-        ],
+                  if (weight.isNotEmpty && height.isNotEmpty) {
+                    double? wei = double.tryParse(weight);
+                    double? hei = double.tryParse(height);
+
+                    if (wei != null && hei != null && hei > 0) {
+                      double bmi = wei / (hei * hei);
+                      setState(() {
+                        result = "Your BMI is: ${bmi.toStringAsFixed(2)}";
+                      });
+                    }
+                  } else {
+                    setState(() {
+                      result = "Please fill all the required details.";
+                    });
+                  }
+                },
+                child: const Text("Calculate")),
+            const SizedBox(
+              height: 20,
+            ),
+            Text(result,
+                style: const TextStyle(
+                    color: Color.fromARGB(179, 19, 5, 5),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15))
+          ],
+        ),
       ),
     );
   }
