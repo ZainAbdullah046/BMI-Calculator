@@ -11,6 +11,7 @@ class _MyWidgetState extends State<Home> {
   final TextEditingController wicontroller = TextEditingController();
   final TextEditingController hecontroller = TextEditingController();
   var result = "";
+  var bcolor = Colors.grey;
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +31,8 @@ class _MyWidgetState extends State<Home> {
       backgroundColor: Colors.grey[200],
       body: Container(
         width: 300,
-        color: Colors.amber,
-        margin: EdgeInsets.all(20),
+        color: bcolor,
+        margin: const EdgeInsets.all(0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -59,7 +60,8 @@ class _MyWidgetState extends State<Home> {
               decoration: const InputDecoration(
                   hintText: "Enter your height in meters",
                   prefixIcon: Icon(Icons.height)),
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
             ),
             const SizedBox(
               height: 20,
@@ -75,8 +77,20 @@ class _MyWidgetState extends State<Home> {
 
                     if (wei != null && hei != null && hei > 0) {
                       double bmi = wei / (hei * hei);
+                      var msg = "";
+                      if (bmi > 25) {
+                        msg = "you are overweight";
+                        bcolor = Colors.red;
+                      } else if (bmi < 18) {
+                        msg = "you are lowweight";
+                        bcolor = Colors.orange;
+                      } else {
+                        msg = "you are fit";
+                        bcolor = Colors.green;
+                      }
                       setState(() {
-                        result = "Your BMI is: ${bmi.toStringAsFixed(2)}";
+                        result =
+                            "Your BMI is: ${bmi.toStringAsFixed(2)}\n $msg";
                       });
                     }
                   } else {
